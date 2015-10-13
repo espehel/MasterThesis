@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "mysql": "^2.9.0",
+    "wtf_wikipedia": "^0.2.0",
     "xml-stream": "^0.4.5"
   }
 }
