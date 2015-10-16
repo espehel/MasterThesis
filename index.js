@@ -2,9 +2,11 @@ var XMLParser = require('./parser/XMLParser');
 var markupParser = require('./parser/MarkupParser');
 var db = require('./database/MySQLApi');
 var pageParser = require('wtf_wikipedia');
-var numbers = require('./utils/numbers');
 
 db.connect();
+
+var i = 0;
+var time = Date.now();
 
 XMLParser.getElements("page",function(element){
     //console.log("a: ", element);
@@ -20,13 +22,15 @@ XMLParser.getElements("page",function(element){
             console.log(entry.text);
         })*/
 
-        var headers = markupParser.extractSectionHeaders(markup);
-        if(headers.indexOf("Example") != -1){
-         console.log(markup.title);
-         }
+        //console.log(markup.title);
+        //var parsedPage = markupParser.extractSectionHeaders(markup);
 
-
-       // var plaintext = txtwiki.parseWikitext(markup);
-        //console.log(plaintext);
+        var parsedPage = markupParser.parseMarkup(markup);
+        parsedPage.sections.forEach(function(entry){
+            if(entry.header.headerText.toLocaleLowerCase() == "example"){
+                console.log(markup.title.toLocaleUpperCase());
+                console.log(entry);
+            }
+        })
     }
 });
