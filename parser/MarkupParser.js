@@ -28,6 +28,17 @@ var isComment = function(start, text){
   return text.substr(start,4) == '<!--'
 };
 
+var isRelevant = function(section){
+    var header = section.header.headerText.toLocaleLowerCase();
+
+    if(header.indexOf("example") != -1){
+        return true;
+    } else {
+        return false;
+    }
+
+};
+
 module.exports.extractSectionHeaders = function (markup) {
     //var plaintext = pageParser.plaintext(markup.content);
     var plaintext = markup.content;
@@ -103,7 +114,7 @@ module.exports.parseMarkup = function(markup) {
                 if (prevSection) {
                     prevSection.end = header.start - 1;
                     prevSection.content = text.substring(prevSection.start, prevSection.end + 1);
-                    parsed.sections.push(prevSection); //TODO gir forgje eksempel
+                    parsed.sections.push(prevSection);
                 }
                 var section = {start: header.end + 1, end: -1, header: header, content: undefined};
                 prevSection = section;
@@ -125,6 +136,19 @@ module.exports.parseMarkup = function(markup) {
     }
     //parsed.sections.push(prevSection);
     return parsed;
+}
+
+module.exports.searchTitles = function(page) {
+    var sections = page.sections;
+    var targetSections = [];
+
+    sections.forEach(function (entry) {
+       if(isRelevant(entry)){
+           targetSections.push(entry);
+       }
+    });
+
+    return targetSections;
 }
 
 

@@ -17,5 +17,5 @@ module.exports.getElements = function(elementName, callback) {
 }
 
 module.exports.extractData = function(element){
-    return {title: element.title.$text, content: element.revision.text.$text};
+    return {title: element.title.$text, content: element.revision.text.$text, timestamp: element.revision.timestamp.$text};
 }

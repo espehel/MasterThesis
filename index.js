@@ -5,32 +5,23 @@ var pageParser = require('wtf_wikipedia');
 
 db.connect();
 
-var i = 0;
-var time = Date.now();
-
-XMLParser.getElements("page",function(element){
-    //console.log("a: ", element);
+XMLParser.getElements("page", function(element){
+    //console.log(element);
     var markup = XMLParser.extractData(element);
 
     if(!element.hasOwnProperty('redirect')){
-        //console.log("b: ", parsed);
-        //db.insertPage(parsed);
-        //console.log("!");
-        /*var parsed = pageParser.parse(markup.content);
-        console.log(parsed.text);
-        parsed.text.Intro.forEach(function (entry) {
-            console.log(entry.text);
-        })*/
-
-        //console.log(markup.title);
-        //var parsedPage = markupParser.extractSectionHeaders(markup);
 
         var parsedPage = markupParser.parseMarkup(markup);
-        parsedPage.sections.forEach(function(entry){
-            if(entry.header.headerText.toLocaleLowerCase() == "example"){
-                console.log(markup.title.toLocaleUpperCase());
-                console.log(entry);
+        if(parsedPage.valid) {
+            var exampleSections = markupParser.searchTitles(parsedPage);
+
+            if (exampleSections.length > 0) {
+                console.log("page: ", markup);
+                db.insertPage(markup, function (pageId) {
+                    db.insertSections(exampleSections, pageId);
+                });
             }
-        })
+        }
+
     }
 });
