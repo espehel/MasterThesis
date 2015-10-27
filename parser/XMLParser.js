@@ -17,5 +17,10 @@ module.exports.getElements = function(elementName, callback) {
 }
 
 module.exports.extractData = function(element){
-    return {title: element.title.$text, content: element.revision.text.$text, timestamp: element.revision.timestamp.$text};
+    return {title: element.title.$text,
+        content: element.revision.text.$text,
+        timestamp: element.revision.timestamp.$text,
+        id: element.id.$text,
+        url: "https://en.wikipedia.org/?curid=" + element.id.$text
+    };
 }
