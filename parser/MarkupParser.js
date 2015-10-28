@@ -151,6 +151,17 @@ module.exports.searchTitles = function(page) {
     return targetSections;
 }
 
+//returns an array of the articles categories
+module.exports.getCategories = function(markup) {
+    return pageParser.parse(markup).categories;
+}
+
+module.exports.addPlaintextContent = function (sections) {
+    sections.forEach(function (entry) {
+        entry.plaintextContent = pageParser.plaintext(entry.content);
+    })
+}
+
 
 
 
