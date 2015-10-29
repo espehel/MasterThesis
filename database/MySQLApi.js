@@ -55,13 +55,23 @@ module.exports.insertSections = function(sections, pageId) {
 
 module.exports.insertCategories = function(categories, pageId) {
     categories.forEach(function(entry){
-        connection.query('SELECT `id` FROM `categories` WHERE `name` = ?', [entry], function(error, results, fields){
-            if (results.length > 0) {
-                linkCategoryToPage(results[0],pageId);
+        connection.query('SELECT `id` FROM `categories` WHERE `name` = ?', [entry], function(err, results, fields){
+            if(err){
+                console.log(err)
             } else {
-                connection.query("INSERT INTO `categories` SET ?", {name: entry}, function (err, result) {
-                    linkCategoryToPage(result.insertId, pageId);
-                })
+                if (results.length > 0) {
+                    console.log("r1: ", results);
+                    linkCategoryToPage(results[0].id, pageId);
+                } else {
+                    connection.query("INSERT INTO `categories` SET ?", {name: entry}, function (err, result) {
+                        if(err){
+                            console.log(err);
+                        } else {
+                            console.log("r2: ", result);
+                            linkCategoryToPage(result.insertId, pageId);
+                        }
+                    })
+                }
             }
         })
 

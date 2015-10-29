@@ -1,12 +1,12 @@
 
 DROP TABLE IF EXISTS `page_sections`;
+DROP TABLE IF EXISTS `pages_categories`;
 DROP TABLE IF EXISTS `pages`;
 DROP TABLE IF EXISTS `categories`;
-DROP TABLE IF EXISTS `pages_categories`;
 
 CREATE TABLE `categories` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `name` varchar(50) NOT NULL,
+    `name` varchar(80) NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
