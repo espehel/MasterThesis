@@ -1,0 +1,1 @@
+SELECT p.title, s.header, s.content_markup, p.url FROM wikipedia.pages AS p left join wikipedia.page_sections AS s ON s.page_id = p.id;

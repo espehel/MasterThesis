@@ -39,62 +39,33 @@ var isRelevant = function(section){
 
 };
 
-module.exports.extractSectionHeaders = function (markup) {
-    //var plaintext = pageParser.plaintext(markup.content);
-    var plaintext = markup.content;
-    var headers = [];
-    console.log(markup.content);
-
-    var start2 = plaintext.indexOf("==");
-    var start3 = plaintext.indexOf("===");
-    var start4 = plaintext.indexOf("====");
-    var start5 = plaintext.indexOf("=====");
-    var toMuch = plaintext.indexOf("======")
-    while(start2 != -1) {
-        //console.log(start2);
-
-        var symb;
-        var start;
-
-        if(numbers.areEqual(start2,start3,start4,start5,toMuch)) {
-            start2 = start2 + 6;
-            continue;
-        }else if(numbers.areEqual(start2,start3,start4,start5)){
-            symb = "=====";
-            start = start5;
-        } else if(numbers.areEqual(start2,start3,start4)){
-            symb = "====";
-            start = start4;
-        } else if(start2==start3){
-            symb = "===";
-            start = start3;
-        } else {
-            symb = "==";
-            start = start2;
-        }
-        var end = plaintext.indexOf(symb, start + 1);
-        //console.log(plaintext.substring(start + symb.length, end));
-        headers.push(plaintext.substring(start + symb.length, end).trim());
-
-
-        start2 = plaintext.indexOf("==",end+symb.length);
-        start3 = plaintext.indexOf("===",end+symb.length);
-        start4 = plaintext.indexOf("====",end+symb.length);
-        start5 = plaintext.indexOf("=====",end+symb.length);
-        toMuch = plaintext.indexOf("======",end+symb.length);
+var findParent = function (sections, type) {
+    //a type 2 header has no parent
+    if(type == 2) {
+        return undefined;
     }
 
-    return headers;
-}
+    //by reversing the list we can just search for the first occurence of a header of a smaller type
+    sections = sections.reverse();
+    for (var i = 0; i < sections.length; i++) {
+        var other = sections[i].header.type;
+        //a smaller type number means a header higher in the hierarchy
+        if(other < type) {
+            return sections[i].header.headerText;
+        }
+    }
+};
 
 module.exports.parseMarkup = function(markup) {
     var cursor = 0;
     var text = markup.content;
-    var parsed = {sections: [], valid: true};
+    var parsed = {sections: [], valid: true, intro: "not found"};
     var prevSection;
+    var foundIntro = false;
 
     while(cursor < text.length){
 
+        //searches for commented markup, which it skips without parsing
         if(text.charAt(cursor) == '<'){
             if(isComment(cursor,text)){
 
@@ -108,15 +79,23 @@ module.exports.parseMarkup = function(markup) {
                 cursor++;
             }
         }
+        // searches for section headers
         else if(text.charAt(cursor) == '=') {
             var header = identifyHeader(cursor, text);
             if (header) {
+
+                if(!foundIntro) {
+                    parsed.introduction = pageParser.plaintext(text.substring(0,cursor));
+                    foundIntro = true;
+                }
+
                 if (prevSection) {
                     prevSection.end = header.start - 1;
                     prevSection.content = text.substring(prevSection.start, prevSection.end + 1);
                     parsed.sections.push(prevSection);
                 }
-                var section = {start: header.end + 1, end: -1, header: header, content: undefined};
+                var section = {start: header.end + 1, end: -1, header: header, content: undefined, parent: undefined};
+                section.parent = findParent(parsed.sections, header.type);
                 prevSection = section;
 
                 if (header.end <= cursor) {
@@ -161,6 +140,43 @@ module.exports.addPlaintextContent = function (sections) {
         entry.plaintextContent = pageParser.plaintext(entry.content);
     })
 }
+
+module.exports.getPageReferences = function (sections) {
+    var referenceMap = new Map();
+    sections.forEach(function (entry) {
+        var cursor = 0;
+        var text = entry.content;
+        var referenceArray = [];
+        //TODO FILE bruker syntaxen [[file: sadadsad...
+
+        while(cursor < text.length) {
+            //found the start of a reference
+            if(text.charAt(cursor) == '[' && text.charAt(cursor+1) == '[' && text.charAt(cursor+2) != '[') {
+                //the end of the reference
+                var pageReference = {};
+                var end = text.indexOf("]]", cursor+1);
+                var reference = text.substring(cursor+2,end).split('|');
+                if(reference.length == 1) { // same name for link and display name
+                    pageReference.name = reference[0];
+                    pageReference.page_link = "https://en.wikipedia.org/wiki/" + reference[0].replace(' ', '_');;
+                    referenceArray.push(pageReference);
+                } else if (reference.length == 2) { // different name for link and display name
+                    pageReference.name = reference[1];
+                    pageReference.page_link = "https://en.wikipedia.org/wiki/" + reference[0].replace(' ', '_');
+                    referenceArray.push(pageReference);
+                } else {//not a link
+
+                }
+                cursor = end +1;
+            } else {
+                cursor++;
+            }
+        }
+        referenceMap.set(entry.header.headerText, referenceArray);
+
+    })
+    return referenceMap;
+};
 
 
 

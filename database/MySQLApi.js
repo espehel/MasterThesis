@@ -24,7 +24,8 @@ module.exports.insertPage = function(element, callback) {
         var pageDAO = {title: element.title,
             timestamp: dateUtil.fromWikiTimestampToSqlTimestamp(element.timestamp),
             wiki_id: element.id,
-            url: element.url
+            url: element.url,
+            introduction: element.introduction
         };
         connection.query('INSERT INTO pages SET ?', pageDAO, function(err, result) {
             if(err){
@@ -36,17 +37,62 @@ module.exports.insertPage = function(element, callback) {
     }
 };
 
-module.exports.insertSections = function(sections, pageId) {
+//can be used if all the sections of the page is being stored
+var insertSectionRecursive = function (sections, pageId, i, nameToIdMap) {
+    if(i >= sections.length) {
+        return;
+    }
+
+    var sectionDAO = { header: sections[i].header.headerText,
+        content_markup: sections[i].content,
+        content_plaintext: sections[i].plaintextContent,
+        page_id: pageId,
+        length: sections[i].content.length
+    };
+    var parentId = nameToIdMap.get(sectionDAO.parent)
+    if(parentId) {
+        sectionDAO.parent_section_id = parentId;
+    } else {
+        sectionDAO.parent_section_id = null;
+    }
+
+    connection.query('INSERT INTO page_sections SET ?', sectionDAO, function(err, result) {
+        if(err){
+            console.log(err);
+        } else {
+            nameToIdMap.set(sectionDAO.header, result.insertId);
+            insertSectionRecursive(sections,pageId,++i,nameToIdMap);
+        }
+    });
+}
+
+module.exports.insertSections = function(sections, pageId, callback) {
     sections.forEach(function(entry){
         var sectionDAO = { header: entry.header.headerText,
             content_markup: entry.content,
             content_plaintext: entry.plaintextContent,
             page_id: pageId,
-            length: entry.content.length
+            length: entry.content.length,
+            parent_header: entry.parent,
+            header_type: entry.header.type
         };
-        console.log("section: ", sectionDAO);
+        //console.log("section: ", sectionDAO);
         connection.query('INSERT INTO page_sections SET ?', sectionDAO, function(err, result) {
             if(err){
+                console.log(err);
+            } else {
+                callback(result.insertId, sectionDAO.header);
+            }
+        });
+    })
+};
+
+module.exports.insertPageReferences = function (references, sectionId) {
+    references.forEach(function(entry){
+        entry.section_id = sectionId;
+        connection.query('INSERT INTO page_references SET ?', entry, function(err, result) {
+            if(err){
+                console.log(entry);
                 console.log(err);
             }
         });
@@ -60,14 +106,14 @@ module.exports.insertCategories = function(categories, pageId) {
                 console.log(err)
             } else {
                 if (results.length > 0) {
-                    console.log("r1: ", results);
+                    //console.log("r1: ", results);
                     linkCategoryToPage(results[0].id, pageId);
                 } else {
                     connection.query("INSERT INTO `categories` SET ?", {name: entry}, function (err, result) {
                         if(err){
                             console.log(err);
                         } else {
-                            console.log("r2: ", result);
+                            //console.log("r2: ", result);
                             linkCategoryToPage(result.insertId, pageId);
                         }
                     })
