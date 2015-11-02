@@ -2,12 +2,10 @@ var mysql = require('mysql');
 var config = require('../config');
 var dateUtil = require('../utils/dates');
 
+//connect to the mysql db
 var connection;
-
 module.exports.connect = function(){
-
     connection = mysql.createConnection(config.databaseConfig);
-
     connection.connect();
 };
 
@@ -17,6 +15,12 @@ var linkCategoryToPage = function(categoryId, pageId) {
             console.log(err);
         }
     })
+};
+
+module.exports.disconnect = function(){
+    if (connection) {
+        connection.end();
+    }
 };
 
 module.exports.insertPage = function(element, callback) {
@@ -37,7 +41,7 @@ module.exports.insertPage = function(element, callback) {
     }
 };
 
-//can be used if all the sections of the page is being stored
+//can be used if all the sections of the page is being stored. This method is not tested properly
 var insertSectionRecursive = function (sections, pageId, i, nameToIdMap) {
     if(i >= sections.length) {
         return;
@@ -73,10 +77,9 @@ module.exports.insertSections = function(sections, pageId, callback) {
             content_plaintext: entry.plaintextContent,
             page_id: pageId,
             length: entry.content.length,
-            parent_header: entry.parent,
+            ancestors: entry.ancestorString,
             header_type: entry.header.type
         };
-        //console.log("section: ", sectionDAO);
         connection.query('INSERT INTO page_sections SET ?', sectionDAO, function(err, result) {
             if(err){
                 console.log(err);
@@ -92,7 +95,6 @@ module.exports.insertPageReferences = function (references, sectionId) {
         entry.section_id = sectionId;
         connection.query('INSERT INTO page_references SET ?', entry, function(err, result) {
             if(err){
-                console.log(entry);
                 console.log(err);
             }
         });
@@ -101,19 +103,20 @@ module.exports.insertPageReferences = function (references, sectionId) {
 
 module.exports.insertCategories = function(categories, pageId) {
     categories.forEach(function(entry){
+        //check if the category already exists in the table
         connection.query('SELECT `id` FROM `categories` WHERE `name` = ?', [entry], function(err, results, fields){
             if(err){
                 console.log(err)
             } else {
+                //if the category exists already
                 if (results.length > 0) {
-                    //console.log("r1: ", results);
                     linkCategoryToPage(results[0].id, pageId);
+                //if it does not exist we insert it
                 } else {
                     connection.query("INSERT INTO `categories` SET ?", {name: entry}, function (err, result) {
                         if(err){
                             console.log(err);
                         } else {
-                            //console.log("r2: ", result);
                             linkCategoryToPage(result.insertId, pageId);
                         }
                     })
@@ -123,10 +126,3 @@ module.exports.insertCategories = function(categories, pageId) {
 
     })
 };
-
-module.exports.disconnect = function(){
-    if (connection) {
-        connection.end();
-    }
-};
-
