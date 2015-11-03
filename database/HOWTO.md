@@ -2,6 +2,7 @@
 run db:  
 * `mysql-server start`
 * `mysql -uroot`
+* check if it needs to start with sudo on your system
 
 Create database:
 * `CREATE DATABASE wikipedia`
