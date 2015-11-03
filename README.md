@@ -5,5 +5,5 @@ A repository for my Master thesis at NTNU regarding extracting data from wikiped
 
 ##Parsing
 
-debug: `node-debug index.js`
-normal: `node index.js`
+debug: `node-debug Wikidump-Parser/index.js`
+normal: `node Wikidump-Parser/index.js`
