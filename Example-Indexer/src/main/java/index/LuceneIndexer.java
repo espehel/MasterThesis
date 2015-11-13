@@ -1,4 +1,4 @@
-package indexer;
+package index;
 
 import models.Page;
 import org.apache.lucene.analysis.Analyzer;
@@ -9,7 +9,6 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -20,14 +19,14 @@ import java.util.List;
  * Created by espen on 04/11/15.
  */
 
-public class IndexData {
+public class LuceneIndexer {
 
-    public IndexData() {
+    public LuceneIndexer() {
 
     }
 
     /** Index all text files under a directory. */
-    public void startIndexing(List<Page> pages) {
+    public void index(List<Page> pages) {
 
         String indexPath = "index";
 

@@ -1,5 +1,7 @@
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import database.MySQLApi;
-import indexer.IndexData;
+import index.ElasticIndexer;
+import index.LuceneIndexer;
 import models.Page;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,9 +22,13 @@ public class Main implements CommandLineRunner{
         System.out.println("Fetching pages");
         List<Page> pages = MySQLApi.getPages();
         System.out.println(pages);
-        IndexData indexer = new IndexData();
+        LuceneIndexer luceneIndexer = new LuceneIndexer();
+        ElasticIndexer elasticIndexer = new ElasticIndexer();
         System.out.println("indexing pages");
-        indexer.startIndexing(pages);
+        //luceneIndexer.index(pages);
+        elasticIndexer.init();
+        System.out.println("initiated");
+        elasticIndexer.index(pages);
         System.out.println("Pages indexed");
     }
 }

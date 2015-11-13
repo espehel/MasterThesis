@@ -1,9 +1,11 @@
 package models;
 
 import org.apache.lucene.document.*;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
+
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 /**
  * Created by espen on 05/11/15.
@@ -24,6 +26,24 @@ public class Page {
         this.wikiId = wikiId;
         this.url = url;
         this.introduction = introduction;
+    }
+
+    public PageJsonWrapper toJson() {
+        try {
+            PageJsonWrapper wrapper = new PageJsonWrapper(String.valueOf(id), jsonBuilder()
+                    .startObject()
+                    .field("id", id)
+                    .field("title", title)
+                    .field("timestamp", timestamp)
+                    .field("wikiId", wikiId)
+                    .field("url", url)
+                    .field("introduction", introduction)
+                    .endObject());
+            return wrapper;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Document toDocument() {
@@ -97,5 +117,15 @@ public class Page {
                 ", url='" + url + '\'' +
                 ", introduction='" + introduction + '\'' +
                 '}';
+    }
+
+    public class PageJsonWrapper {
+        public final String id;
+        public final XContentBuilder json;
+
+        public PageJsonWrapper(String id, XContentBuilder json) {
+            this.id = id;
+            this.json = json;
+        }
     }
 }
