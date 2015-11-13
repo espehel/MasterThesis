@@ -13,10 +13,9 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `pages` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT NOT NULL,
     `title` varchar(50) NOT NULL,
     `timestamp` TIMESTAMP NOT NULL,
-    `wiki_id` INT NOT NULL,
     `url` varchar(50) NOT NULL,
     `introduction` MEDIUMTEXT NOT NULL,
     PRIMARY KEY (`id`)

@@ -27,7 +27,7 @@ module.exports.insertPage = function(element, callback) {
     if (connection) {
         var pageDAO = {title: element.title,
             timestamp: dateUtil.fromWikiTimestampToSqlTimestamp(element.timestamp),
-            wiki_id: element.id,
+            id: element.id,
             url: element.url,
             introduction: element.introduction
         };
