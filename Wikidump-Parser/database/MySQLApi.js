@@ -35,7 +35,7 @@ module.exports.insertPage = function(element, callback) {
             if(err){
                 console.log(err);
             } else {
-                callback(result.insertId);
+                callback(pageDAO.id);
             }
         });
     }
