@@ -43,4 +43,13 @@ public class DBConnection {
         }
         return dbConnection.connection.createStatement();
     }
+
+    public static void close() {
+        try {
+            dbConnection.connection.close();
+            dbConnection.connection = null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
