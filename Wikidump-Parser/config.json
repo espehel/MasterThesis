@@ -2,8 +2,9 @@
   "dumpLocation": "/Users/espen/Development/wikipedia/enwiki-20150602-pages-articles.xml",
   "databaseConfig": {
     "host": "localhost",
-    "user" : "root",
-    "password" : "",
-    "database" : "wikipedia"
-  }
+    "user": "root",
+    "password": "",
+    "database": "wikipedia"
+  },
+  "skipElementCount": "0"
 }
