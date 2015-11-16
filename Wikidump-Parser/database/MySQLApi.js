@@ -104,7 +104,7 @@ module.exports.insertPageReferences = function (references, sectionId) {
 module.exports.insertCategories = function(categories, pageId) {
     categories.forEach(function(entry){
         //check if the category already exists in the table
-        connection.query('SELECT `id` FROM `categories` WHERE `name` = ?', [entry], function(err, results, fields){
+        connection.query('SELECT `id` FROM `categories` WHERE `name` = ?', [entry.trim()], function(err, results, fields){
             if(err){
                 console.log(err)
             } else {
@@ -113,7 +113,7 @@ module.exports.insertCategories = function(categories, pageId) {
                     linkCategoryToPage(results[0].id, pageId);
                 //if it does not exist we insert it
                 } else {
-                    connection.query("INSERT INTO `categories` SET ?", {name: entry}, function (err, result) {
+                    connection.query("INSERT INTO `categories` SET ?", {name: entry.trim()}, function (err, result) {
                         if(err){
                             console.log(err);
                         } else {
