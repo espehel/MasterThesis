@@ -12,6 +12,8 @@ db.connect();
 //converts every page element into a json-object
 XMLParser.getElements("page", function(element){
 
+    //console.log(element);
+
     if (n >= skipElementCount) {
         //extracts the interesting data
         var markup = XMLParser.extractData(element);
@@ -46,11 +48,12 @@ XMLParser.getElements("page", function(element){
             }
         }
     }
-    
+
     n++;
     var completed = Number((n/4881893)*100).toFixed(2);
     if(completed>last) {
         console.log("docs: ", n, "completed: ",completed);
+        console.log("Memoryusage: ", process.memoryUsage());
     }
     last = completed;
 
