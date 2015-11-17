@@ -1,24 +1,26 @@
 package models;
 
+import index.ElasticSearchIndexable;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+
 import java.util.List;
 
-/**
- * Created by espen on 16/11/15.
- */
-public class Example {
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
+
+public class Example implements ElasticSearchIndexable {
 
     private long id;
     private String title;
-    private long page_id;
+    private long pageId;
     private String url;
     private String introduction;
     private String content_plaintext;
     private List<String> categories;
 
-    public Example(long id, String title, long page_id, String url, String introduction, String content_plaintext) {
+    public Example(long id, String title, long pageId, String url, String introduction, String content_plaintext) {
         this.id = id;
         this.title = title;
-        this.page_id = page_id;
+        this.pageId = pageId;
         this.url = url;
         this.introduction = introduction;
         this.content_plaintext = content_plaintext;
@@ -28,57 +30,31 @@ public class Example {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    @Override
+    public XContentBuilder toJson() {
+        try {
+            return jsonBuilder()
+                    .startObject()
+                    .field("id", id)
+                    .field("title", title)
+                    .field("pageId", pageId)
+                    .field("content", content_plaintext)
+                    .field("url", url)
+                    .field("introduction", introduction)
+                    .field("categories", categories)
+                    .endObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public String getTitle() {
-        return title;
+    public long getPageId() {
+        return pageId;
     }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public long getPage_id() {
-        return page_id;
-    }
-
-    public void setPage_id(long page_id) {
-        this.page_id = page_id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
-
-    public String getContent_plaintext() {
-        return content_plaintext;
-    }
-
-    public void setContent_plaintext(String content_plaintext) {
-        this.content_plaintext = content_plaintext;
-    }
-
 
     public void setCategories(List<String> categories) {
         this.categories = categories;
-    }
-
-    public List<String> getCategories() {
-        return categories;
     }
 
     @Override
@@ -86,7 +62,7 @@ public class Example {
         return "Example{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", page_id=" + page_id +
+                ", pageId=" + pageId +
                 ", url='" + url + '\'' +
                 ", introduction='" + introduction + '\'' + "\n" +
                 ", content_plaintext='" + content_plaintext + '\'' + "\n" +

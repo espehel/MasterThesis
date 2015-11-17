@@ -1,10 +1,9 @@
 package database;
 
-import com.mysql.jdbc.authentication.MysqlClearPasswordPlugin;
+import index.ElasticSearchIndexable;
 import models.Example;
 import models.Page;
 
-import java.security.PublicKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,9 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by espen on 04/11/15.
- */
+
 public class MySQLApi {
 
     public static List<Page> getPages() {
@@ -38,9 +35,9 @@ public class MySQLApi {
         return pages;
     }
 
-    public static List<Example> getExamples() {
+    public static List<ElasticSearchIndexable> getExamples() {
 
-        List<Example> examples = new ArrayList<>();
+        List<ElasticSearchIndexable> examples = new ArrayList<>();
         try {
             Statement statement = DBConnection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM `examples`");
@@ -52,7 +49,7 @@ public class MySQLApi {
                         rs.getString("url"),
                         rs.getString("introduction"),
                         rs.getString("content_plaintext"));
-                example.setCategories(getCategories(example.getPage_id()));
+                example.setCategories(getCategories(example.getPageId()));
                 examples.add(example);
             }
         } catch (SQLException e) {

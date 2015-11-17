@@ -1,12 +1,11 @@
 package index;
 
-import models.Page;
-import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.node.Node;
 
 import java.net.InetAddress;
@@ -14,9 +13,6 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 
-/**
- * Created by espen on 11/11/15.
- */
 public class ElasticIndexer {
 
     Node node;
@@ -42,18 +38,18 @@ public class ElasticIndexer {
 
     }
 
-    public void index(List<Page> pages) {
+    public void index(List<ElasticSearchIndexable> elements) {
 
-        /*pages.stream()
+        /*elements.stream()
                 .map(page1 -> page1.toJson())
-                .map(page -> client.prepareIndex("wikipedia","pages", page.id).setSource(page.json))
+                .map(page -> client.prepareIndex("wikipedia","elements", page.id).setSource(page.json))
                 .map(IndexRequestBuilder::get);*/
 
 
-        for (Page page : pages) {
-            Page.PageJsonWrapper wrapper = page.toJson();
-            IndexResponse respone = client.prepareIndex("wikipedia", "pages", wrapper.id).setSource(wrapper.json).get();
-            System.out.println(respone);
+        for (ElasticSearchIndexable element : elements) {
+            XContentBuilder json = element.toJson();
+            IndexResponse response = client.prepareIndex("wikipedia", "example", String.valueOf(element.getId())).setSource(json).get();
+            System.out.println(response);
         }
 
     }
@@ -61,6 +57,11 @@ public class ElasticIndexer {
 
 
     public void shutdown() {
-        node.close();
+        if (node != null) {
+            node.close();
+        }
+        if (client != null) {
+            client.close();
+        }
     }
 }

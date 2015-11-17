@@ -15,10 +15,6 @@ import java.nio.file.*;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by espen on 04/11/15.
- */
-
 public class LuceneIndexer {
 
     public LuceneIndexer() {

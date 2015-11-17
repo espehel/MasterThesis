@@ -1,5 +1,6 @@
 package models;
 
+import index.ElasticSearchIndexable;
 import org.apache.lucene.document.*;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 
@@ -10,7 +11,7 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 /**
  * Created by espen on 05/11/15.
  */
-public class Page {
+public class Page implements ElasticSearchIndexable{
 
     private long id;
     private String title;
@@ -28,9 +29,9 @@ public class Page {
         this.introduction = introduction;
     }
 
-    public PageJsonWrapper toJson() {
+    public XContentBuilder toJson() {
         try {
-            PageJsonWrapper wrapper = new PageJsonWrapper(String.valueOf(id), jsonBuilder()
+            return jsonBuilder()
                     .startObject()
                     .field("id", id)
                     .field("title", title)
@@ -38,8 +39,7 @@ public class Page {
                     .field("wikiId", wikiId)
                     .field("url", url)
                     .field("introduction", introduction)
-                    .endObject());
-            return wrapper;
+                    .endObject();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,50 +63,6 @@ public class Page {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public long getWikiId() {
-        return wikiId;
-    }
-
-    public void setWikiId(long wikiId) {
-        this.wikiId = wikiId;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
-
     @Override
     public String toString() {
         return "Page{" +
@@ -117,15 +73,5 @@ public class Page {
                 ", url='" + url + '\'' +
                 ", introduction='" + introduction + '\'' +
                 '}';
-    }
-
-    public class PageJsonWrapper {
-        public final String id;
-        public final XContentBuilder json;
-
-        public PageJsonWrapper(String id, XContentBuilder json) {
-            this.id = id;
-            this.json = json;
-        }
     }
 }
