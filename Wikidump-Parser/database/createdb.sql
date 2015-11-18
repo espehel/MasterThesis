@@ -9,8 +9,7 @@ CREATE TABLE `categories` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` varchar(80) NOT NULL,
     `last_modified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    UNIQUE (`name`)
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `pages` (
