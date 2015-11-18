@@ -178,7 +178,6 @@ module.exports.getPageReferences = function (sections) {
         var cursor = 0;
         var text = entry.content;
         var referenceArray = [];
-
         while(cursor < text.length) {
             //found the start of a reference
             if(text.charAt(cursor) == '[' && text.charAt(cursor+1) == '[' && text.charAt(cursor+2) != '[') {
@@ -198,7 +197,11 @@ module.exports.getPageReferences = function (sections) {
                 } else {//not a link
 
                 }
-                cursor = end +1;
+                if(end < 0) {
+                    cursor++;
+                } else {
+                    cursor = end + 1;
+                }
             } else {
                 cursor++;
             }

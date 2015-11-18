@@ -10,6 +10,7 @@ module.exports.getElements = function(elementName, callback) {
     var element = null;
     var inTitle = false;
     var inId = false;
+    var inTimestamp = false;
     var tagStack = [];
 
     saxStream.on("error", function (e) {
@@ -36,8 +37,11 @@ module.exports.getElements = function(elementName, callback) {
                 inPage = false;
                 element = null;
                 tagStack = [];
+                callback({redirect: true});
             } else if (tag.name == "id") {
                 inId = true;
+            } else if (tag.name == "timestamp") {
+                inTimestamp = true;
             }
         }
         tagStack.push(tag.name);
@@ -49,9 +53,10 @@ module.exports.getElements = function(elementName, callback) {
             } else if (inTitle) {
                 element.title = text;
             } else if (inId && tagStack[tagStack.length-2] == "page") {
-                console.log(text);
                 element.id = text;
                 element.url = "https://en.wikipedia.org/?curid=" + text;
+            } else if (inTimestamp) {
+                element.timestamp = text;
             }
         }
     });
@@ -62,12 +67,14 @@ module.exports.getElements = function(elementName, callback) {
         } else if (tagName == "page" && inPage) {
             inPage = false;
             tagStack = [];
-            callback(element);
+            callback(element, this._parser.line);
             element = null;
         } else if (tagName == "title") {
             inTitle = false;
         } else if (tagName == "id") {
             inId = false;
+        } else if (tagName == "timestamp") {
+            inTimestamp = false;
         }
         tagStack.pop();
     });

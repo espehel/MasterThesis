@@ -10,16 +10,18 @@ var last = -1;
 db.connect();
 
 //converts every page element into a json-object
-XMLParser.getElements("page", function(element){
+XMLParser.getElements("page", function(element, line){
 
     //console.log(element);
 
     if (n >= skipElementCount) {
         //extracts the interesting data
-        var markup = XMLParser.extractData(element);
+        //var markup = XMLParser.extractData(element);
+        var markup = element;
 
         //we ignore pages that exist only as a redirect
-        if (!element.hasOwnProperty('redirect')) {
+        //if (!element.hasOwnProperty('redirect')) {
+        if (!element.redirect) {
 
             //parses the content of the page into a object structure
             var parsedPage = markupParser.parseMarkup(markup.content);
