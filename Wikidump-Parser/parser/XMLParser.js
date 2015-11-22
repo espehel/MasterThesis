@@ -5,6 +5,7 @@ var saxStream = require("sax").createStream(true);
 
 module.exports.getElements = function(elementName, callback) {
 
+
     var inPage = false;
     var inText = false;
     var element = null;
@@ -19,9 +20,15 @@ module.exports.getElements = function(elementName, callback) {
         console.error("error!", e);
         // clear the error
         this._parser.error = null;
-        this._parser.resume()
+        this._parser.resume();
     });
     saxStream.on("opentag", function (tag) {
+
+        //this is the root element and this will be called first and only once.
+        //if (tag.name = "mediawiki") {
+            //this._parser.line = config.startLine;
+        //}
+
         if (tag.name == "page") {
             inPage = true;
             element = {};
@@ -37,7 +44,7 @@ module.exports.getElements = function(elementName, callback) {
                 inPage = false;
                 element = null;
                 tagStack = [];
-                callback({redirect: true});
+                //callback({redirect: true}, this._parser.line);
             } else if (tag.name == "id") {
                 inId = true;
             } else if (tag.name == "timestamp") {

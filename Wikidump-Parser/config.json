@@ -6,5 +6,6 @@
     "password": "",
     "database": "wikipedia"
   },
-  "skipElementCount": "0"
+  "pageCount": "0",
+  "startLine": "0"
 }

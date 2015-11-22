@@ -128,12 +128,18 @@ module.exports.parseMarkup = function(text) {
                 section.ancestorString = getAncestorString(parsed.sections, header.type);
                 prevSection = section;
 
+
+                if (header.headerText.length > 100) {
+                    parsed.valid = false;
+                }
+
                 if (header.end <= cursor) {
                     cursor++;
                     parsed.valid = false;
                 } else {
                     cursor = header.end;
                 }
+
 
             } else {
                 cursor++;

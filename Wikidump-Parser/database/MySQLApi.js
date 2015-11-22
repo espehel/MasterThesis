@@ -102,29 +102,30 @@ module.exports.insertPageReferences = function (references, sectionId) {
 };
 
 module.exports.insertCategories = function(categories, pageId) {
-    categories.forEach(function(entry){
-        //check if the category already exists in the table
-        connection.query('SELECT `id` FROM `categories` WHERE `name` = ?', [entry.trim()], function(err, results, fields){
-            if(err){
-                console.log(err)
-            } else {
-                //if the category exists already
-                if (results.length > 0) {
-                    linkCategoryToPage(results[0].id, pageId);
-                    //if it does not exist we insert it
+    if (categories) {
+        categories.forEach(function (entry) {
+            //check if the category already exists in the table
+            connection.query('SELECT `id` FROM `categories` WHERE `name` = ?', [entry.trim()], function (err, results, fields) {
+                if (err) {
+                    console.log(err)
                 } else {
-                    connection.query("INSERT INTO `categories` SET ?", {name: entry.trim()}, function (err, result) {
-                        if(err){
-                            console.log(err);
-                        } else {
-                            linkCategoryToPage(result.insertId, pageId);
-                        }
-                    })
+                    //if the category exists already
+                    if (results.length > 0) {
+                        linkCategoryToPage(results[0].id, pageId);
+                        //if it does not exist we insert it
+                    } else {
+                        connection.query("INSERT INTO `categories` SET ?", {name: entry.trim()}, function (err, result) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                linkCategoryToPage(result.insertId, pageId);
+                            }
+                        })
+                    }
                 }
-            }
+            })
         })
-
-    })
+    }
 };
 
 /*var insertCategory = function (name, pageId) {
