@@ -1,5 +1,25 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    h1= title
+    p Welcome to #{title}
+
+
+    // Wrapper
+    #wrapper
+
+        // examples
+        h2 Examples
+        button#search Search
+        form
+            input#searchField(type="text")
+        #examples
+            table
+                thead
+                    th Title
+                    th Content
+                    th Categories
+                tbody
+        // /USER LIST
+
+    // /WRAPPER

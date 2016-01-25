@@ -6,3 +6,30 @@ body {
 a {
   color: #00B7FF;
 }
+
+
+
+#examples {
+  margin:0 0 30px 0;
+}
+#examples table {
+  border-collapse:separate;
+  border-spacing:1px;
+  background:#CCC;
+}
+#examples table th {
+  background:#EEE;
+  font-weight:600;
+  padding:10px 20px;
+  text-align:center;
+}
+#examples table tbody {
+  padding:0; margin:0;
+  border-collapse:collapse;
+  border-spacing:0px;
+}
+#examples table td {
+  background:#FFF;
+  padding:5px 10px;
+  text-align:center;
+}
