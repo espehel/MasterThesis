@@ -12,7 +12,7 @@ module.exports.search = function(query_content, callback) {
         body : {
             query: {
                 match: {
-                    content: query_content
+                    "_all": query_content
                 }
             }
         }
