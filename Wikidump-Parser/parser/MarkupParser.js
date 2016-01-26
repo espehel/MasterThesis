@@ -200,11 +200,13 @@ module.exports.getPageReferences = function (sections) {
                 var reference = text.substring(cursor+2,end).split('|');
 
                 if(reference.length == 1) { // same name for link and display name
-                    pageReference.name = reference[0];
+                    pageReference.reference_name = reference[0];
+                    pageReference.page_name = reference[0];
                     pageReference.page_link = "https://en.wikipedia.org/wiki/" + reference[0].replace(' ', '_');;
                     referenceArray.push(pageReference);
                 } else if (reference.length == 2) { // different name for link and display name
-                    pageReference.name = reference[1];
+                    pageReference.reference_name = reference[1];
+                    pageReference.page_name = reference[0];
                     pageReference.page_link = "https://en.wikipedia.org/wiki/" + reference[0].replace(' ', '_');
                     referenceArray.push(pageReference);
                 } else {//not a link

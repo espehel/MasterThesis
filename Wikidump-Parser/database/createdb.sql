@@ -49,7 +49,8 @@ CREATE TABLE `page_sections` (
 
 CREATE TABLE `page_references` (
     `id` INT NOT NULL AUTO_INCREMENT,
-    `name` varchar(80) NOT NULL,
+    `reference_name` varchar(80) NOT NULL,
+    `page_name` varchar(80) NOT NULL,
     `page_link` varchar(100) NOT NULL,
     `section_id` INT NOT NULL,
     `last_modified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
