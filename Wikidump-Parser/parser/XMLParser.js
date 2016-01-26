@@ -40,11 +40,10 @@ module.exports.getElements = function(elementName, callback) {
                 inText = true;
             } else if (tag.name == "title") {
                 inTitle = true;
-            } else if (tag.name == "redirect") {
+            } else if (tag.name == "redirect") { //we are not interested in pages that redirects to others
                 inPage = false;
                 element = null;
                 tagStack = [];
-                //callback({redirect: true}, this._parser.line);
             } else if (tag.name == "id") {
                 inId = true;
             } else if (tag.name == "timestamp") {
@@ -74,7 +73,8 @@ module.exports.getElements = function(elementName, callback) {
         } else if (tagName == "page" && inPage) {
             inPage = false;
             tagStack = [];
-            callback(element, this._parser.line);
+            if(element.title && !(element.title.indexOf("Template:", 0) === 0)) //we are not interested in template articles
+                callback(element, this._parser.line);
             element = null;
         } else if (tagName == "title") {
             inTitle = false;

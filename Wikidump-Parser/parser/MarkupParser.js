@@ -31,13 +31,20 @@ var isComment = function(start, text){
   return text.substr(start,4) == '<!--'
 };
 
-//simply checks if the header contains a the word example. This function should be expanded for better filtering
+//simply checks if the header contains a the word example or the header of a higher section. This function should be expanded for better filtering
 var isRelevant = function(section){
     var header = section.header.headerText.toLocaleLowerCase();
 
-    if(header.indexOf("example") != -1){
+    if (section.content.length < 1) {
+        return false;
+    }
+    else if(header.indexOf("example") != -1) {
         return true;
-    } else {
+    }
+    else if (section.ancestorString.toLocaleLowerCase().indexOf("example") != -1) {
+        return true;
+    }
+    else {
         return false;
     }
 
