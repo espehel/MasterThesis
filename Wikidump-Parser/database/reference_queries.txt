@@ -1,0 +1,16 @@
+
+------ gets a article and the number of times it is referenced from other examples --------
+SELECT page_name, COUNT(page_name) AS ref_in
+ FROM page_references p
+ group by page_name
+ order by ref_in desc;
+
+
+---- gets section ids and the amount of referenes inside the section --------
+SELECT r.section_id AS id, p.title AS title, COUNT(r.section_id) AS ref_out
+    FROM page_references r
+    LEFT JOIN page_sections s
+    ON r.section_id = s.id
+    LEFT JOIN pages p
+    ON s.page_id = p.id
+	GROUP BY r.section_id;

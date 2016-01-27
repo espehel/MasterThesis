@@ -198,7 +198,7 @@ module.exports.getPageReferences = function (sections) {
                 var pageReference = {};
                 var end = text.indexOf("]]", cursor+1);
                 var reference = text.substring(cursor+2,end).split('|');
-
+                reference[0] = reference[0].toLocaleLowerCase();//convert to lowercase since it will then redirect to page with correct caseing and wikipage references doesnt always have correct capitalization
                 if(reference.length == 1) { // same name for link and display name
                     pageReference.reference_name = reference[0];
                     pageReference.page_name = reference[0];
