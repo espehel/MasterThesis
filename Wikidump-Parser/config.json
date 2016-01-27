@@ -1,5 +1,5 @@
 {
-  "dumpLocation": "/Users/espen/Development/wikipedia/enwiki-20150602-pages-articles.xml",
+  "dumpLocation": "/Users/espen/Development/wikipedia/enwiki-20160113-pages-articles.xml",
   "databaseConfig": {
     "host": "localhost",
     "user": "root",
