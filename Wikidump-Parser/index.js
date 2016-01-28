@@ -56,7 +56,7 @@ XMLParser.getElements("page", function(element, line){
     //}
 
     n++;
-    var completed = Number((line/844482154)*100).toFixed(2);
+    var completed = Number((line/886249030)*100).toFixed(2);
     if (completed > last) {
         console.log("docs: ", n, "completed: ",completed, "Line: ", numberFormat.format(line));
         var mem = process.memoryUsage();
