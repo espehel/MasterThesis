@@ -10,6 +10,7 @@ module.exports.search = function(query_content, callback) {
     client.search({
         index: "wikipedia",
         body : {
+            "size": 20,
             query: {
                 match: {
                     "_all": query_content
@@ -29,6 +30,7 @@ module.exports.search2 = function(query_content, callback) {
     client.search({
         index: "wikipedia",
         body : {
+            "size": 20,
             "query": {
                 "match": {
                     "_all": {
@@ -50,6 +52,7 @@ module.exports.search3 = function(query_content, callback) {
     client.search({
         index: "wikipedia",
         body : {
+            "size": 20,
             "query": {
                 "bool": {
                     "should": [
@@ -88,6 +91,7 @@ module.exports.search4 = function(query_content, callback) {
     client.search({
         index: "wikipedia",
         body : {
+            "size": 20,
             "query": {
                 "dis_max": {
                     "should": [
@@ -126,6 +130,7 @@ module.exports.search5 = function(query_content, callback) {
     client.search({
         index: "wikipedia",
         body : {
+            "size": 20,
             "query": {
                 "dis_max": {
                     "should": [

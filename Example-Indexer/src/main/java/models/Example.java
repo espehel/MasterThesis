@@ -14,16 +14,18 @@ public class Example implements ElasticSearchIndexable {
     private long pageId;
     private String url;
     private String introduction;
+    private final String header;
     private String content_plaintext;
     private String content_markup;
     private List<String> categories;
 
-    public Example(long id, String title, long pageId, String url, String introduction, String content_plaintext, String content_markup) {
+    public Example(long id, String title, long pageId, String url, String introduction, String header, String content_plaintext, String content_markup) {
         this.id = id;
         this.title = title;
         this.pageId = pageId;
         this.url = url;
         this.introduction = introduction;
+        this.header = header;
         this.content_plaintext = content_plaintext;
         this.content_markup = content_markup;
     }
@@ -40,6 +42,7 @@ public class Example implements ElasticSearchIndexable {
                     .field("id", id)
                     .field("title", title)
                     .field("pageId", pageId)
+                    .field("header", header)
                     .field("content", content_plaintext)
                     .field("markup", content_markup)
                     .field("url", url)
@@ -68,6 +71,7 @@ public class Example implements ElasticSearchIndexable {
                 ", pageId=" + pageId +
                 ", url='" + url + '\'' +
                 ", introduction='" + introduction + '\'' +
+                ", header='" + header + '\'' +
                 ", content_plaintext='" + content_plaintext + '\'' +
                 ", content_markup='" + content_markup + '\'' +
                 ", categories=" + categories +

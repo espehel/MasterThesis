@@ -17,7 +17,7 @@ function getExamples() {
         $.each(data.examples, function(){
           //  console.log(this);
             tableContent += '<tr>';
-            tableContent += '<td><a href="' + this._source.url + '">' + this._source.title+'</a></td>';
+            tableContent += '<td><a href="' + this._source.url + '">' + this._source.title + '</a>' + ': ' + '<a href="' + this._source.url + '#' + this._source.header + '">' + this._source.header + '</a>' + '</td>';
             tableContent += '<td>'+this._source.html+'</td>';
             tableContent += '<td>'+this._source.categories.join(', ')+'</td>';
             tableContent += '</tr>';

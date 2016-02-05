@@ -48,6 +48,7 @@ public class MySQLApi {
                         rs.getLong("page_id"),
                         rs.getString("url"),
                         rs.getString("introduction"),
+                        rs.getString("header"),
                         rs.getString("content_plaintext"),
                         rs.getString("content_markup"));
                 example.setCategories(getCategories(example.getPageId()));

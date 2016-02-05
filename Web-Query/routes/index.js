@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var es_api = require('../elasticsearch/api');
 var wikipedia = require("../wikipedia/wikipedia-js");
+var scraper = require("../wikipedia/scraper");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -14,16 +15,22 @@ router.get('/examples/', function(req, res, next) {
         var length = result.length;
         var i = 0;
         result.forEach(function(entry) {
-            wikipedia.convertSection(entry._source.markup, function(err, html){
-                console.log(entry);
-                entry._source.html = html;
+            scraper.scrape(entry._source.url, entry._source.header, function(err, html){
+                //console.log(entry);
+                if(err) {
+                    entry._source.html = "";
+                } else {
+                    entry._source.html = html;
+                }
                 i++;
 
                 if(i === length) {
-                    console.log("FINISHED");
+                    //console.log("FINISHED");
                     res.json({ examples: result });
                 }
             });
+
+
         });
     })
 });

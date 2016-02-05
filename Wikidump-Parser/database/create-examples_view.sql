@@ -1,16 +1,3 @@
-CREATE VIEW `examples` AS (
-	SELECT s.id, p.title, p.introduction, p.id AS page_id, p.url, s.content_plaintext
-    FROM page_sections s
-    LEFT JOIN pages p 
-    ON s.page_id = p.id
-);
-
-
-
-
-
-
-
 CREATE
     ALGORITHM = UNDEFINED
     DEFINER = `root`@`localhost`
@@ -22,8 +9,9 @@ VIEW `wikipedia`.`examples` AS
         `p`.`introduction` AS `introduction`,
         `p`.`id` AS `page_id`,
         `p`.`url` AS `url`,
+        `s`.`header` AS `header`,
         `s`.`content_plaintext` AS `content_plaintext`,
-        `s`.`content_markup` AS `content_plaintext`
+        `s`.`content_markup` AS `content_markup`
     FROM
         (`wikipedia`.`page_sections` `s`
         LEFT JOIN `wikipedia`.`pages` `p` ON ((`s`.`page_id` = `p`.`id`))))
