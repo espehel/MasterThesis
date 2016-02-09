@@ -52,7 +52,9 @@ module.exports.scrape = function (url, section, callback) {
             console.log(url + "  :   " + section);
             console.log(cleanedSection);
             //var parent = $('#' + cleanedSection).parent();
-            var parent = $('[id*="' + cleanedSection + '"]').parent();
+            var parent = $('[id*="' + cleanedSection + '"]').parent()/*.filter(function (i, el) {
+                return $(this).attr() != 'mw-editsection';
+            })*/;
             if(parent.length > 0) {
                 var tag = $(parent)[0].name;
                 //want to select the next h tag wich is of same size or bigger

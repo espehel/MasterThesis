@@ -7,6 +7,29 @@ a {
   color: #00B7FF;
 }
 
+ul {
+    list-style: none;
+}
+
+.container {
+    text-align: center;
+}
+
+.rightColumn {
+    float: right;
+    width: 20%;
+}
+
+.leftColumn {
+    float: left;
+    width: 20%;
+}
+
+.mainColumn {
+    display: inline-block;
+    width: 60%;
+}
+
 
 
 #examples {
@@ -31,4 +54,8 @@ a {
 #examples table td {
   background:#FFF;
   padding:5px 10px;
+}
+
+.mw-editsection {
+    visibility: hidden;
 }

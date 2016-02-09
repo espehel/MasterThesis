@@ -4,6 +4,25 @@ var client = new elasticsearch.Client({
     //,log: 'trace'
 });
 
+module.exports.getExampleById = function(exampleId, callback) {
+    client.search({
+        index: "wikipedia",
+        body: {
+            size: 1,
+            query: {
+                filtered: {
+                    filter: {
+                        term: {
+                            id: exampleId
+                        }
+                    }
+                }
+            }
+        }
+    }, function (error, response) {
+        callback(error, {example: response.hits.hits[0]});
+    });
+};
 
 module.exports.search = function(query_content, callback) {
 

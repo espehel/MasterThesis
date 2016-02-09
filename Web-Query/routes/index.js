@@ -35,9 +35,20 @@ router.get('/examples/', function(req, res, next) {
     })
 });
 
-/* GET example/id */
+/* GET examples/id */
 router.get('/examples/:id', function(req, res, next) {
-
+    es_api.getExampleById(req.params.id, function (error, result) {
+        if (result.example) {
+           scraper.scrape(result.example._source.url, result.example._source.header, function (err, html) {
+               if (err) {
+                   result.example._source.html = "";
+               } else {
+                   result.example._source.html = html;
+               }
+               res.render('example', {example: result.example});
+           })
+        }
+    })
 });
 
 module.exports = router;
