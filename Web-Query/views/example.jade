@@ -1,19 +1,19 @@
 extends layout
+mixin linkItem(href, text)
+    li
+        a(href=href)= text
 
 block content
     .leftColumn.container
         ul
-            li examples
-            li examples
-            li examples
-            li examples
-            li examples
+            each val in example.similarExamples.left
+                +linkItem(val._source.id, val._source.title + ": " + val._score)
     .mainColumn.container
         !{example._source.html}
     .rightColumn.container
         ul
-            li examples
-            li examples
-            li examples
-            li examples
-            li examples
+            each val in example.similarExamples.right
+                +linkItem(val._source.id, val._source.title + ": " + val._score)
+
+
+

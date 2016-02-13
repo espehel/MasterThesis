@@ -3,6 +3,7 @@ var router = express.Router();
 var es_api = require('../elasticsearch/api');
 var wikipedia = require("../wikipedia/wikipedia-js");
 var scraper = require("../wikipedia/scraper");
+var analyzer = require("../analyzing/example-analyzer");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -37,16 +38,19 @@ router.get('/examples/', function(req, res, next) {
 
 /* GET examples/id */
 router.get('/examples/:id', function(req, res, next) {
-    es_api.getExampleById(req.params.id, function (error, result) {
-        if (result.example) {
-           scraper.scrape(result.example._source.url, result.example._source.header, function (err, html) {
-               if (err) {
-                   result.example._source.html = "";
-               } else {
-                   result.example._source.html = html;
-               }
-               res.render('example', {example: result.example});
-           })
+    es_api.getExampleById(req.params.id, function (error, example) {
+        if (example) {
+            es_api.getExamplesBySimilarity(example, function (error2, similarExamples) {
+                scraper.scrape(example._source.url, example._source.header, function (err, html) {
+                    if (err) {
+                        example._source.html = "";
+                    } else {
+                        example._source.html = html;
+                    }
+                    example.similarExamples = analyzer.splitInTwo(similarExamples);
+                    res.render('example', {example: example});
+                })
+            })
         }
     })
 });

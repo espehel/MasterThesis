@@ -20,8 +20,24 @@ module.exports.getExampleById = function(exampleId, callback) {
             }
         }
     }, function (error, response) {
-        callback(error, {example: response.hits.hits[0]});
+        callback(error, response.hits.hits[0]);
     });
+};
+
+module.exports.getExamplesBySimilarity = function(example, callback) {
+    client.search({
+        index: "wikipedia",
+        body: {
+            size: 10,
+            query: {
+                match: {
+                    categories: example._source.categories.join(", ")
+                }
+            }
+        }
+    }, function (error, response) {
+        callback(error, response.hits.hits);
+    })
 };
 
 module.exports.search = function(query_content, callback) {

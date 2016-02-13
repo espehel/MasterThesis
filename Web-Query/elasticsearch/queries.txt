@@ -1,0 +1,78 @@
+GET /wikipedia/example/_search
+{
+  "query": {
+    "match": {
+      "categories": "Game theory, Paradoxes, Dilemmas"
+    }
+  }
+}
+
+
+
+GET /wikipedia/example/_search
+{
+  "query": {
+    "filtered": {
+      "filter": {
+        "term": {
+          "id": 19178
+        }
+      }
+    }
+  }
+}
+
+
+GET /wikipedia/example/_search
+{
+  "query": {
+  "filtered": {
+    "filter": {
+      "terms": {
+        "categories": [ "Game theory", "Paradoxes", "Dilemmas"]
+      }
+    }
+  }
+}
+}
+
+GET wikipedia/_mapping/example
+
+DELETE wikipedia
+
+PUT wikipedia/
+{
+  "mappings": {
+      "example": {
+        "properties": {
+          "categories": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "header": {
+            "type": "string"
+          },
+          "id": {
+            "type": "long"
+          },
+          "introduction": {
+            "type": "string"
+          },
+          "markup": {
+            "type": "string"
+          },
+          "pageId": {
+            "type": "long"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+  }
+}
