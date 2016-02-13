@@ -9,15 +9,18 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 public class Example implements ElasticSearchIndexable {
 
-    private long id;
-    private String title;
-    private long pageId;
-    private String url;
-    private String introduction;
-    private final String header;
-    private String content_plaintext;
-    private String content_markup;
+    public final long id;
+    public final String title;
+    public final long pageId;
+    public final String url;
+    public final String introduction;
+    public final String header;
+    public final String content_plaintext;
+    public final String content_markup;
     private List<String> categories;
+    private int refIn;
+    private int refOut;
+
 
     public Example(long id, String title, long pageId, String url, String introduction, String header, String content_plaintext, String content_markup) {
         this.id = id;
@@ -48,6 +51,8 @@ public class Example implements ElasticSearchIndexable {
                     .field("url", url)
                     .field("introduction", introduction)
                     .field("categories", categories)
+                    .field("refIn", refIn)
+                    .field("refIn", refOut)
                     .endObject();
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,6 +68,10 @@ public class Example implements ElasticSearchIndexable {
         this.categories = categories;
     }
 
+    public void setRefIn(int refIn) {
+        this.refIn = refIn;
+    }
+
     @Override
     public String toString() {
         return "Example{" +
@@ -76,5 +85,9 @@ public class Example implements ElasticSearchIndexable {
                 ", content_markup='" + content_markup + '\'' +
                 ", categories=" + categories +
                 '}';
+    }
+
+    public void setRefOut(int refOut) {
+        this.refOut = refOut;
     }
 }
