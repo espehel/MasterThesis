@@ -24,7 +24,7 @@ module.exports.getExampleById = function(exampleId, callback) {
     });
 };
 
-module.exports.getExamplesBySimilarity = function(example, callback) {
+module.exports.getExamplesBySimilarity = function(example, callback) { //TODO: can use not match with id to exclude same, can use match with url to get from same page
     client.search({
         index: "wikipedia",
         body: {

@@ -1,19 +1,22 @@
 extends layout
-mixin linkItem(href, text)
+mixin linkItem(href, title, header, score)
     li
-        a(href=href)= text
+        a(href=href)
+            =title + ":"
+        =" " + header
+        =" - " + score
 
 block content
     .leftColumn.container
         ul
             each val in example.similarExamples.left
-                +linkItem(val._source.id, val._source.title + ": " + val._score)
+                +linkItem(val._source.id, val._source.title, val._source.header, val._score)
     .mainColumn.container
         !{example._source.html}
     .rightColumn.container
         ul
             each val in example.similarExamples.right
-                +linkItem(val._source.id, val._source.title + ": " + val._score)
+                +linkItem(val._source.id, val._source.title, val._source.header, val._score)
 
 
 
