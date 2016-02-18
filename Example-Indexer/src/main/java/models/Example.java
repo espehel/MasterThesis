@@ -18,6 +18,7 @@ public class Example implements ElasticSearchIndexable {
     public final String content_plaintext;
     public final String content_markup;
     private List<String> categories;
+    private List<String> references;
     private int refIn;
     private int refOut;
 
@@ -51,8 +52,9 @@ public class Example implements ElasticSearchIndexable {
                     .field("url", url)
                     .field("introduction", introduction)
                     .field("categories", categories)
-                    .field("refIn", refIn)
-                    .field("refIn", refOut)
+                    .field("references", references)
+                    //.field("refIn", refIn)
+                    //.field("refIn", refOut)
                     .endObject();
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,6 +68,10 @@ public class Example implements ElasticSearchIndexable {
 
     public void setCategories(List<String> categories) {
         this.categories = categories;
+    }
+
+    public void setReferences(List<String> references) {
+        this.references = references;
     }
 
     public void setRefIn(int refIn) {

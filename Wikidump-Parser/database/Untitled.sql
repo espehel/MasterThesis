@@ -1,0 +1,1 @@
+SELECT COUNT(section_id) FROM wikipedia.page_references;

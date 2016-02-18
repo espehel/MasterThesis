@@ -37,9 +37,9 @@ public class MySQLApi {
 
     public static List<ElasticSearchIndexable> getExamples() {
 
-        System.out.println(new Date() + ": Fetching refIn");
+        //System.out.println(new Date() + ": Fetching refIn");
        // Map<String, Integer> refIn = getRefIn();
-        System.out.println(new Date() + ": Fetching refOut");
+        //System.out.println(new Date() + ": Fetching refOut");
         //Map<Long, Integer> refOut = getRefOut();
 
         List<ElasticSearchIndexable> examples = new ArrayList<>();
@@ -48,7 +48,7 @@ public class MySQLApi {
             System.out.println(new Date() + ": Fetching examples");
             ResultSet rs = statement.executeQuery("SELECT * FROM `examples`");
 
-            System.out.println("Creating exmaple objects");
+            System.out.println("Creating example objects");
             while (rs.next()) {
                 Example example = new Example(rs.getLong("id"),
                         rs.getString("title"),
@@ -59,6 +59,7 @@ public class MySQLApi {
                         rs.getString("content_plaintext"),
                         rs.getString("content_markup"));
                 example.setCategories(getCategories(example.getPageId()));
+                example.setReferences(getReferences(example.getId()));
                 //example.setRefIn(refIn.get(example.title.toLowerCase()));
                 //example.setRefOut(refOut.get(example.id));
                 examples.add(example);
@@ -86,17 +87,15 @@ public class MySQLApi {
         return categories;
     }
 
-    public static List<Reference> getReferences() {
-        List<Reference> references = new ArrayList<>();
+    public static List<String> getReferences(long pageId) {
+        List<String> references = new ArrayList<>();
 
         try {
             Statement statement = DBConnection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT `page_name`, `section_id` FROM `page_references`");
+            ResultSet rs = statement.executeQuery("SELECT `title` FROM `ref_to` WHERE `id` = "+ pageId);
 
             while (rs.next()) {
-                references.add(new Reference(
-                        rs.getString("page_name"),
-                        rs.getLong("section_id")));
+                references.add(rs.getString("title"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

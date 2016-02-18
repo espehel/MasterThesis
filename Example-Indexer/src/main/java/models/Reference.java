@@ -5,11 +5,11 @@ package models;
  */
 public class Reference {
 
-    final String pageName;
-    final long sectionId;
+    final String title;
+    final long id;
 
-    public Reference(String pageName, long sectionId) {
-        this.pageName = pageName;
-        this.sectionId = sectionId;
+    public Reference(String title, long id) {
+        this.title = title;
+        this.id = id;
     }
 }
