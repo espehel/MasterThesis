@@ -24,6 +24,26 @@ module.exports.getExampleById = function(exampleId, callback) {
     });
 };
 
+module.exports.getExamplesByCategoryFiltering = function(example, callback) { //TODO: can use not match with id to exclude same, can use match with url to get from same page
+    client.search({
+        index: "wikipedia",
+        body: {
+            size: 500,
+            query: {
+                filtered: {
+                    filter: {
+                        terms: {
+                            categories: example._source.categories
+                        }
+                    }
+                }
+            }
+        }
+    }, function (error, response) {
+        callback(error, response.hits.hits);
+    })
+};
+
 module.exports.getExamplesBySimilarity = function(example, callback) { //TODO: can use not match with id to exclude same, can use match with url to get from same page
     client.search({
         index: "wikipedia",
