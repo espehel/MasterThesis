@@ -40,14 +40,24 @@ router.get('/examples/', function(req, res, next) {
 router.get('/examples/:id', function(req, res, next) {
     es_api.getExampleById(req.params.id, function (error, example) {
         if (example) {
-            es_api.getExamplesBySimilarity(example, function (error2, similarExamples) {
+            es_api.getExamplesByCategoryFiltering(example, function (error2, similarExamples) {
+                similarExamples.forEach(function (entry) {
+                    console.log(entry._source.title);
+                });
+                console.log("----------------------------------------------------");
+                console.log(example._source.references);
                 scraper.scrape(example._source.url, example._source.header, function (err, html) {
                     if (err) {
                         example._source.html = "";
                     } else {
                         example._source.html = html;
                     }
-                    example.similarExamples = analyzer.splitInTwo(similarExamples);
+                    //example.similarExamples = analyzer.splitInTwo(similarExamples);
+                    example.similarExamples = {};
+                    example.similarExamples.left = analyzer.getReferredFrom(example, similarExamples);
+                    console.log(example.similarExamples.left);
+                    example.similarExamples.right = analyzer.getRefersTo(example, similarExamples);
+                    console.log(example.similarExamples.right);
                     res.render('example', {example: example});
                 })
             })

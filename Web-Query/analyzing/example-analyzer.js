@@ -12,7 +12,8 @@ module.exports.getReferredFrom = function (main, examples) {
         var references = examples[i]._source.references;
 
         for(var j = 0; j < references.length; j++) {
-            if (references[j] == main._source.title) {
+            if (references[j] == main._source.title.toLocaleLowerCase) {
+                console.log("found");
                 result.push[examples[i]];
                 break;
             }
@@ -29,7 +30,8 @@ module.exports.getRefersTo = function (main, examples) {
 
         for(var j = 0; j < examples.length; j++) {
 
-            if(main._source.references[i] = examples[j]._source.title) {
+            if(main._source.references[i] = examples[j]._source.title.toLocaleLowerCase()) {
+                console.log("found2");
                 result.push(examples[j]);
             }
         }
