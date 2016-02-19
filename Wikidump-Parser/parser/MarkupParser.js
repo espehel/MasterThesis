@@ -218,6 +218,7 @@ function getReferences(text) {
             cursor++;
         }
     }
+    return referenceArray;
 }
 
 module.exports.getIntroductionReferences = function (section) {
