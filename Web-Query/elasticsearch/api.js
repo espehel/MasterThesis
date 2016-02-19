@@ -24,6 +24,58 @@ module.exports.getExampleById = function(exampleId, callback) {
     });
 };
 
+module.exports.getReferredFrom = function(example, callback) {
+    client.search({
+        index: "wikipedia",
+        body: {
+            size: 10,
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match": {
+                            "references": example._source.title
+
+                        }
+                    },
+                    "filter": {
+                        "terms": {
+                            "categories": example._source.categories
+                        }
+                    }
+                }
+            }
+        }
+    }, function (error, response) {
+        callback(error, response.hits.hits);
+    });
+};
+
+module.exports.getRefersTo = function(example, callback) {
+    client.search({
+        index: "wikipedia",
+        body: {
+            size: 10,
+            "query": {
+                "filtered": {
+                    "query": {
+                        "match": {
+                            "title": example._source.references.join(" ")
+
+                        }
+                    },
+                    "filter": {
+                        "terms": {
+                            "categories": example._source.categories
+                        }
+                    }
+                }
+            }
+        }
+    }, function (error, response) {
+        callback(error, response.hits.hits);
+    });
+};
+
 module.exports.getExamplesByCategoryFiltering = function(example, callback) { //TODO: can use not match with id to exclude same, can use match with url to get from same page
     client.search({
         index: "wikipedia",

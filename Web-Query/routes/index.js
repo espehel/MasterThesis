@@ -37,7 +37,7 @@ router.get('/examples/', function(req, res, next) {
 });
 
 /* GET examples/id */
-router.get('/examples/:id', function(req, res, next) {
+router.get('/examples2/:id', function(req, res, next) {
     es_api.getExampleById(req.params.id, function (error, example) {
         if (example) {
             es_api.getExamplesByCategoryFiltering(example, function (error2, similarExamples) {
@@ -59,6 +59,30 @@ router.get('/examples/:id', function(req, res, next) {
                     example.similarExamples.right = analyzer.getRefersTo(example, similarExamples);
                     console.log(example.similarExamples.right);
                     res.render('example', {example: example});
+                })
+            })
+        }
+    })
+});
+
+/* GET examples/id */
+router.get('/examples/:id', function(req, res, next) {
+    es_api.getExampleById(req.params.id, function (error, example) {
+        if (example) {
+            es_api.getRefersTo(example, function (error2, refersTo) {
+                es_api.getReferredFrom(example, function (error3, referredFrom) {
+                    scraper.scrape(example._source.url, example._source.header, function (err, html) {
+                        if (err) {
+                            example._source.html = "";
+                        } else {
+                            example._source.html = html;
+                        }
+                        //example.similarExamples = analyzer.splitInTwo(similarExamples);
+                        example.similarExamples = {};
+                        example.similarExamples.left = referredFrom;
+                        example.similarExamples.right = refersTo;
+                        res.render('example', {example: example});
+                    })
                 })
             })
         }
