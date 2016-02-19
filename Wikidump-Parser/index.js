@@ -40,10 +40,11 @@ XMLParser.getElements("page", function(element, line){
 
                         markupParser.addPlaintextContent(exampleSections);
                         var referencesMap = markupParser.getPageReferences(exampleSections);
+                        var introductionReferences = markupParser.getIntroductionReferences(markup.introduction);
                         //inserts data into db using callbacks and the genereated id from the dbms
                         db.insertPage(markup, function (pageId) {
                             db.insertSections(exampleSections, pageId, function (sectionId, sectionHeader) {
-                                db.insertPageReferences(referencesMap.get(sectionHeader), sectionId);
+                                db.insertPageReferences(referencesMap.get(sectionHeader).concat(introductionReferences), sectionId);
                             });
                             var categories = markupParser.getCategories(markup.content);
                             db.insertCategories(categories, pageId);

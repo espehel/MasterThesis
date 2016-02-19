@@ -122,7 +122,7 @@ module.exports.parseMarkup = function(text) {
             if (header) {
 
                 if(!foundIntro) {
-                    parsed.introduction = pageParser.plaintext(text.substring(0,cursor));
+                    parsed.introduction = text.substring(0,cursor);
                     foundIntro = true;
                 }
 
@@ -185,44 +185,50 @@ module.exports.addPlaintextContent = function (sections) {
 };
 
 //iterates through each character looking for markup signaling links/page-references
+function getReferences(text) {
+    var cursor = 0;
+    var referenceArray = [];
+    while(cursor < text.length) {
+        //found the start of a reference
+        if(text.charAt(cursor) == '[' && text.charAt(cursor+1) == '[' && text.charAt(cursor+2) != '[') {
+            //the end of the reference
+            var pageReference = {};
+            var end = text.indexOf("]]", cursor+1);
+            var reference = text.substring(cursor+2,end).split('|');
+            reference[0] = reference[0].toLocaleLowerCase();//convert to lowercase since it will then redirect to page with correct caseing and wikipage references doesnt always have correct capitalization
+            if(reference.length == 1) { // same name for link and display name
+                pageReference.reference_name = reference[0];
+                pageReference.page_name = reference[0];
+                pageReference.page_link = "https://en.wikipedia.org/wiki/" + reference[0].replace(' ', '_');;
+                referenceArray.push(pageReference);
+            } else if (reference.length == 2) { // different name for link and display name
+                pageReference.reference_name = reference[1];
+                pageReference.page_name = reference[0];
+                pageReference.page_link = "https://en.wikipedia.org/wiki/" + reference[0].replace(' ', '_');
+                referenceArray.push(pageReference);
+            } else {//not a link
+
+            }
+            if(end < 0) {
+                cursor++;
+            } else {
+                cursor = end + 1;
+            }
+        } else {
+            cursor++;
+        }
+    }
+}
+
+module.exports.getIntroductionReferences = function (section) {
+    return getReferences(section);
+}
+
 module.exports.getPageReferences = function (sections) {
     var referenceMap = new Map();
     sections.forEach(function (entry) {
-        var cursor = 0;
-        var text = entry.content;
-        var referenceArray = [];
-        while(cursor < text.length) {
-            //found the start of a reference
-            if(text.charAt(cursor) == '[' && text.charAt(cursor+1) == '[' && text.charAt(cursor+2) != '[') {
-                //the end of the reference
-                var pageReference = {};
-                var end = text.indexOf("]]", cursor+1);
-                var reference = text.substring(cursor+2,end).split('|');
-                reference[0] = reference[0].toLocaleLowerCase();//convert to lowercase since it will then redirect to page with correct caseing and wikipage references doesnt always have correct capitalization
-                if(reference.length == 1) { // same name for link and display name
-                    pageReference.reference_name = reference[0];
-                    pageReference.page_name = reference[0];
-                    pageReference.page_link = "https://en.wikipedia.org/wiki/" + reference[0].replace(' ', '_');;
-                    referenceArray.push(pageReference);
-                } else if (reference.length == 2) { // different name for link and display name
-                    pageReference.reference_name = reference[1];
-                    pageReference.page_name = reference[0];
-                    pageReference.page_link = "https://en.wikipedia.org/wiki/" + reference[0].replace(' ', '_');
-                    referenceArray.push(pageReference);
-                } else {//not a link
-
-                }
-                if(end < 0) {
-                    cursor++;
-                } else {
-                    cursor = end + 1;
-                }
-            } else {
-                cursor++;
-            }
-        }
+        var referenceArray = getReferences(entry.content);
         referenceMap.set(entry.header.headerText, referenceArray);
-
     });
     return referenceMap;
 };
