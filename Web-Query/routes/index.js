@@ -17,7 +17,6 @@ router.get('/examples/', function(req, res, next) {
         var i = 0;
         result.forEach(function(entry) {
             scraper.scrape(entry._source.url, entry._source.header, function(err, html){
-                //console.log(entry);
                 if(err) {
                     entry._source.html = "";
                 } else {
@@ -26,7 +25,6 @@ router.get('/examples/', function(req, res, next) {
                 i++;
 
                 if(i === length) {
-                    //console.log("FINISHED");
                     res.json({ examples: result });
                 }
             });
@@ -44,15 +42,12 @@ router.get('/examples2/:id', function(req, res, next) {
                 similarExamples.forEach(function (entry) {
                     console.log(entry._source.title);
                 });
-                console.log("----------------------------------------------------");
-                console.log(example._source.references);
                 scraper.scrape(example._source.url, example._source.header, function (err, html) {
                     if (err) {
                         example._source.html = "";
                     } else {
                         example._source.html = html;
                     }
-                    //example.similarExamples = analyzer.splitInTwo(similarExamples);
                     example.similarExamples = {};
                     example.similarExamples.left = analyzer.getReferredFrom(example, similarExamples);
                     console.log(example.similarExamples.left);
@@ -77,7 +72,6 @@ router.get('/examples/:id', function(req, res, next) {
                         } else {
                             example._source.html = html;
                         }
-                        //example.similarExamples = analyzer.splitInTwo(similarExamples);
                         example.similarExamples = {};
                         example.similarExamples.left = referredFrom;
                         example.similarExamples.right = refersTo;

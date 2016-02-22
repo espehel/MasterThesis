@@ -23,7 +23,6 @@ function removeMarkup(string) {
     var last = string.indexOf("''", first+1);
     if( first != -1 && last != -1) {
         var shortened = string.substring(0, first) + string.substring(last+2, string.length);
-        //console.log(shortened);
         shortened = removeMarkup(shortened);
     } else {
         return string;
@@ -43,7 +42,6 @@ function cleanString(string) {
 
 module.exports.scrape = function (url, section, callback) {
     request(url, function (error, response, body) {
-        //console.log(body);
         if (!error) {
             var $ = cheerio.load(body);
 

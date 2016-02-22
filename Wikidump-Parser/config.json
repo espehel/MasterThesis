@@ -1,11 +1,11 @@
 {
-  "dumpLocation": "/Users/espen/Development/wikipedia/enwiki-20160113-pages-articles.xml",
+  "dumpLocation": "/Users/espen/Development/wikipedia/enwiki-20160204-pages-articles.xml",
   "databaseConfig": {
     "host": "localhost",
     "user": "root",
     "password": "",
     "database": "wikipedia"
   },
-  "pageCount": "0",
-  "startLine": "0"
+  "pageCount": 826071,
+  "startLine": 122523952
 }
