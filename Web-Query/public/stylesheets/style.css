@@ -2,13 +2,12 @@ html {
     height: 100%;
 }
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    height: 100%;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
 
 .container ul {
@@ -42,7 +41,6 @@ a {
     outline: 1px solid black;
     float: left;
     width: 100% ;
-    padding: 10px;
 }
 
 .bottomRow li {
@@ -52,27 +50,27 @@ a {
 
 
 #examples {
-  margin:0 0 30px 0;
+    margin:0 0 30px 0;
 }
 #examples table {
-  border-collapse:separate;
-  border-spacing:1px;
-  background:#CCC;
+    border-collapse:separate;
+    border-spacing:1px;
+    background:#CCC;
 }
 #examples table th {
-  background:#EEE;
-  font-weight:600;
-  padding:10px 20px;
-  text-align:center;
+    background:#EEE;
+    font-weight:600;
+    padding:10px 20px;
+    text-align:center;
 }
 #examples table tbody {
-  padding:0; margin:0;
-  border-collapse:collapse;
-  border-spacing:0px;
+    padding:0; margin:0;
+    border-collapse:collapse;
+    border-spacing:0px;
 }
 #examples table td {
-  background:#FFF;
-  padding:5px 10px;
+    background:#FFF;
+    padding:5px 10px;
 }
 
 .mw-editsection {
