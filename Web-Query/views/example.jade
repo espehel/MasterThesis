@@ -17,6 +17,10 @@ block content
         ul
             each val in example.similarExamples.right
                 +linkItem(val._source.id, val._source.title, val._source.header, val._score)
+    .bottomRow
+        ul
+            each val in example._source.categories
+                li= val
 
 
 

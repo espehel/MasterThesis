@@ -11,11 +11,11 @@ a {
   color: #00B7FF;
 }
 
-ul {
+.container ul {
     list-style: none;
 }
 
-li {
+.container li {
     padding-bottom: 15px;
 }
 
@@ -23,6 +23,8 @@ li {
     outline: 1px solid black;
     text-align: center;
     display: table-cell;
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
 .rightColumn {
@@ -34,11 +36,19 @@ li {
 }
 
 .mainColumn {
-    //display: inline-block;
-    //width: 60%;
-    padding: 1%;
 }
 
+.bottomRow {
+    outline: 1px solid black;
+    float: left;
+    width: 100% ;
+    padding: 10px;
+}
+
+.bottomRow li {
+    float: left;
+    padding-right: 40px;
+}
 
 
 #examples {
