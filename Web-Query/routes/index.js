@@ -16,7 +16,7 @@ router.get('/examples/', function(req, res, next) {
         var length = result.length;
         var i = 0;
         result.forEach(function(entry) {
-            scraper.scrape(entry._source.url, entry._source.header, function(err, html){
+            scraper.scrape(entry._source.url, entry._source.title, entry._source.header, function(err, html){
                 if(err) {
                     entry._source.html = "";
                 } else {
@@ -42,7 +42,7 @@ router.get('/examples2/:id', function(req, res, next) {
                 similarExamples.forEach(function (entry) {
                     console.log(entry._source.title);
                 });
-                scraper.scrape(example._source.url, example._source.header, function (err, html) {
+                scraper.scrape(example._source.url, example._source.title, example._source.header, function (err, html) {
                     if (err) {
                         example._source.html = "";
                     } else {
@@ -66,7 +66,7 @@ router.get('/examples/:id', function(req, res, next) {
         if (example) {
             es_api.getRefersTo(example, function (error2, refersTo) {
                 es_api.getReferredFrom(example, function (error3, referredFrom) {
-                    scraper.scrape(example._source.url, example._source.header, function (err, html) {
+                    scraper.scrape(example._source.url, example._source.title, example._source.header, function (err, html) {
                         if (err) {
                             example._source.html = "";
                         } else {

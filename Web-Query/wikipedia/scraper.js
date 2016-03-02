@@ -40,7 +40,7 @@ function cleanString(string) {
         .replace(new RegExp("\\)", 'g'), ".29");
 }
 
-module.exports.scrape = function (url, section, callback) {
+module.exports.scrape = function (url, title, section, callback) {
     request(url, function (error, response, body) {
         if (!error) {
             var $ = cheerio.load(body);
@@ -50,9 +50,10 @@ module.exports.scrape = function (url, section, callback) {
             console.log(url + "  :   " + section);
             console.log(cleanedSection);
             //var parent = $('#' + cleanedSection).parent();
-            var parent = $('[id*="' + cleanedSection + '"]').parent()/*.filter(function (i, el) {
-                return $(this).attr() != 'mw-editsection';
-            })*/;
+            var span = $('[id*="' + cleanedSection + '"]');
+            span.html(title + ": " + span.html());
+            console.log(span.html());
+            var parent = span.parent();
             if(parent.length > 0) {
                 var tag = $(parent)[0].name;
                 //want to select the next h tag wich is of same size or bigger
