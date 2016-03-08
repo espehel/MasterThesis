@@ -11,5 +11,6 @@ Create tables:
 * from `~` run command: `mysql -u root wikipedia < Development/Repositories/MasterThesis/Wikidump-Parser/database/createdb.sql`
 
 if problem with db already running and pid stuff:  
-* find PID: `ps -ef | grep mysql`
+* find PID: `ps -ef | grep mysql` 
+* PID is the number in the second column
 * kill process: `kill -9 PID`
