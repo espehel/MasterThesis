@@ -70,6 +70,10 @@ public class Example implements ElasticSearchIndexable {
         this.categories = categories;
     }
 
+    public List<String> getCategories() {
+        return categories;
+    }
+
     public void setReferences(List<String> references) {
         this.references = references;
     }

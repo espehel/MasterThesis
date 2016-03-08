@@ -49,7 +49,6 @@ public class ElasticIndexer {
         for (ElasticSearchIndexable element : elements) {
             XContentBuilder json = element.toJson();
             IndexResponse response = client.prepareIndex("wikipedia", "example", String.valueOf(element.getId())).setSource(json).get();
-            System.out.println(response);
         }
 
     }
