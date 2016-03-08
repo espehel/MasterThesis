@@ -160,7 +160,7 @@ module.exports.parseMarkup = function(text) {
 };
 
 //retrieves sections that should be relevan
-module.exports.searchTitles = function(page) {
+module.exports.searchTitles = function(page) { //TODO: should not add parent section if children are added
     var sections = page.sections;
     var targetSections = [];
 
