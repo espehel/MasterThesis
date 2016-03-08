@@ -25,9 +25,9 @@ function getExamples() {
         });
 
         // Inject the whole content string into our existing HTML table
-        $('#examples table tbody').html(tableContent);
+        $('#examples').find('table tbody').html(tableContent);
     });
-};
+}
 
 // search
 $('#search').on('click', getExamples);

@@ -114,6 +114,22 @@ module.exports.getExamplesByCategoryFiltering = function (example, callback) { /
     })
 };
 
+module.exports.getExamplesInCategory = function (category, callback) {
+    client.search({
+        index: "wikipedia",
+        body: {
+            size: 500,
+            query: {
+                match: {
+                    categories: category
+                }
+            }
+        }
+    }, function (error, response) {
+        callback(error, response.hits.hits);
+    })
+};
+
 module.exports.getExamplesBySimilarity = function (example, callback) { //TODO: can use not match with id to exclude same, can use match with url to get from same page
     client.search({
         index: "wikipedia",
