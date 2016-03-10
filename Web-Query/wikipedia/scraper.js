@@ -46,13 +46,13 @@ module.exports.scrape = function (url, title, section, callback) {
             var $ = cheerio.load(body);
 
             var cleanedSection = cleanString(section);
-            console.log("-----------------------------------");
-            console.log(url + "  :   " + section);
-            console.log(cleanedSection);
+            //console.log("-----------------------------------");
+            //console.log(url + "  :   " + section);
+            //console.log(cleanedSection);
             //var parent = $('#' + cleanedSection).parent();
             var span = $('[id*="' + cleanedSection + '"]');
             span.html(title + ": " + span.html());
-            console.log(span.html());
+            //console.log(span.html());
             var parent = span.parent();
             if(parent.length > 0) {
                 var tag = $(parent)[0].name;

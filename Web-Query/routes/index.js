@@ -5,6 +5,9 @@ var wikipedia = require("../wikipedia/wikipedia-js");
 var scraper = require("../wikipedia/scraper");
 var analyzer = require("../analyzing/example-analyzer");
 
+//should keep info about last search performed. This solution only works when using app locally
+var results = [];
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Example Query' });
@@ -15,7 +18,17 @@ router.get('/examples/', function(req, res, next) {
     es_api.search(req.query.search, function (error, result) {
         var length = result.length;
         var i = 0;
+
         result.forEach(function(entry) {
+
+            //add results to an array that can be used in exploring an example further
+            results.push({
+                id: entry._source.id,
+                score: entry._score,
+                categories: entry._source.categories
+            });
+
+            //scrapes the live wiki page for the html and style
             scraper.scrape(entry._source.url, entry._source.title, entry._source.header, function(err, html){
                 if(err) {
                     entry._source.html = "";
@@ -34,13 +47,19 @@ router.get('/examples/', function(req, res, next) {
     })
 });
 
+/* POST examples/id */
+/*router.post('/examples/:id', function(req, res, next) {
+    console.log("redirect");
+    res.redirect('/examples/'+req.params.id);
+});*/
+
 /* GET examples/id */
-router.get('/examples/:id', function(req, res, next) {
+router.get('/examples1/:id', function(req, res, next) {
     es_api.getExampleById(req.params.id, function (error, example) {
         if (example) {
             es_api.getExamplesByCategoryFiltering(example, function (error2, similarExamples) {
                 similarExamples.forEach(function (entry) {
-                    console.log(entry._source.title);
+                    //console.log(entry._source.title);
                 });
                 scraper.scrape(example._source.url, example._source.title, example._source.header, function (err, html) {
                     if (err) {
@@ -48,8 +67,12 @@ router.get('/examples/:id', function(req, res, next) {
                     } else {
                         example._source.html = html;
                     }
-                    example.similarExamples = analyzer.splitInTwo(similarExamples);
                     res.render('example', {example: example});
+                    example.similarExamples = {};
+                    example.similarExamples.left = analyzer.getReferredFrom(example, similarExamples);
+                    console.log(example.similarExamples.left);
+                    example.similarExamples.right = analyzer.getRefersTo(example, similarExamples);
+                    console.log(example.similarExamples.right);
                 })
             })
         }
@@ -57,24 +80,23 @@ router.get('/examples/:id', function(req, res, next) {
 });
 
 /* GET examples/id */
-router.get('/examples1/:id', function(req, res, next) {
+router.get('/examples/:id', function(req, res, next) {
     es_api.getExampleById(req.params.id, function (error, example) {
         if (example) {
-            es_api.getExamplesInCategory(example._source.categories[0], function (error2, similarExamples) {
-                similarExamples.forEach(function (entry) {
-                    console.log(entry._source.title);
-                });
+            if(req.query.x == '1' && results.length > 0) {
+                var category = analyzer.pickBestCategory(results, example._source.categories);
+            } else {
+                var category = example._source.categories;
+            }
+            console.log(category);
+            es_api.getExamplesInCategory(category, function (error2, similarExamples) {
                 scraper.scrape(example._source.url, example._source.title, example._source.header, function (err, html) {
                     if (err) {
                         example._source.html = "";
                     } else {
                         example._source.html = html;
                     }
-                    example.similarExamples = {};
-                    example.similarExamples.left = analyzer.getReferredFrom(example, similarExamples);
-                    console.log(example.similarExamples.left);
-                    example.similarExamples.right = analyzer.getRefersTo(example, similarExamples);
-                    console.log(example.similarExamples.right);
+                    example.similarExamples = analyzer.splitInTwo(similarExamples);
                     res.render('example', {example: example});
                 })
             })
