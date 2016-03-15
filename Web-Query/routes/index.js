@@ -91,7 +91,7 @@ router.get('/examples/:id', function(req, res, next) {
             }else if (req.query.state == 2 && categoryGroup) {
                 category = categoryGroup;
             } else {
-                var category = example._source.categories[0];
+                category = example._source.categories[0];
             }
             console.log(category);
             es_api.getExamplesInCategory(category, function (error2, similarExamples) {
@@ -101,7 +101,8 @@ router.get('/examples/:id', function(req, res, next) {
                     } else {
                         example._source.html = html;
                     }
-                    example.similarExamples = analyzer.splitInTwo(similarExamples);
+                    example.similarExamples = analyzer.order(similarExamples, example);
+                    //example.similarExamples = analyzer.splitInTwo(similarExamples);
                     res.render('example', {example: example});
                 })
             })

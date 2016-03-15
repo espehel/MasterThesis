@@ -64,6 +64,35 @@ module.exports.pickBestCategory = function(results, categories) {
     return bestCategorySet[0];
 };
 
+function compare(cats1, cats2) {
+    var matches = 0;
+    cats1.forEach(function (cat1) {
+        cats2.forEach(function (cat2) {
+            if(cat1.toLowerCase() == cat2.toLowerCase()) {
+                matches += 1;
+            }
+        })
+    })
+    return matches;
+}
+
+module.exports.order = function (similarExamples, example) {
+    var left = [];
+    var right = [];
+    similarExamples.forEach(function (entry) {
+        entry.score = compare(entry._source.categories, example._source.categories) / entry._source.categories.length;
+        if(entry.score == 1) {
+            left.push(entry);
+        } else {
+            right.push(entry);
+        }
+    })
+    right.sort(function (a, b) {
+        return b.score - a.score;
+    })
+    return {left: left,  right: right.slice(0, 10)};
+}
+
 
 
 /*

@@ -10,13 +10,13 @@ block content
     .leftColumn.container
         ul
             each val in example.similarExamples.left
-                +linkItem(val._source.id, val._source.title, val._source.header, val._score)
+                +linkItem(val._source.id, val._source.title, val._source.header, val.score)
     .mainColumn.container
         !{example._source.html}
     .rightColumn.container
         ul
             each val in example.similarExamples.right
-                +linkItem(val._source.id, val._source.title, val._source.header, val._score)
+                +linkItem(val._source.id, val._source.title, val._source.header, val.score)
     .bottomRow
         ul
             each val in example._source.categories
