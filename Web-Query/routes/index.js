@@ -7,6 +7,7 @@ var analyzer = require("../analyzing/example-analyzer");
 
 //should keep info about last search performed. This solution only works when using app locally
 var results = [];
+var categoryGroup;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -83,10 +84,14 @@ router.get('/examples1/:id', function(req, res, next) {
 router.get('/examples/:id', function(req, res, next) {
     es_api.getExampleById(req.params.id, function (error, example) {
         if (example) {
-            if(req.query.x == '1' && results.length > 0) {
-                var category = analyzer.pickBestCategory(results, example._source.categories);
+            var category;
+            if(req.query.state == '1' && results.length > 0) {
+                category = analyzer.pickBestCategory(results, example._source.categories);
+                categoryGroup = category;
+            }else if (req.query.state == 2 && categoryGroup) {
+                category = categoryGroup;
             } else {
-                var category = example._source.categories;
+                var category = example._source.categories[0];
             }
             console.log(category);
             es_api.getExamplesInCategory(category, function (error2, similarExamples) {

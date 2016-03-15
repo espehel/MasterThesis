@@ -39,7 +39,7 @@ function getExamples() {
             tableContent += '<tr>';
             tableContent += '<td><a href="' + this._source.url + '">' + this._source.title + '</a>' + '</td>';//+ ': ' + '<a href="' + this._source.url + '#' + this._source.header + '">' + this._source.header + '</a>' + '</td>';
             tableContent += '<td>'+this._score+'</td>';
-            tableContent += '<td>'+ '<a href="examples/' + this._source.id + '?x=1' + '">Explore Example</a><br/>' +this._source.html+'</td>';
+            tableContent += '<td>'+ '<a href="examples/' + this._source.id + '?state=1' + '">Explore Example</a><br/>' +this._source.html+'</td>';
             //tableContent += '<td>' + '<input type="button" value="Explore example" onclick="exploreExample(' + this._source.id + ');" </input><br/>' +this._source.html+'</td>';
             tableContent += '<td>'+this._source.categories.join(', ')+'</td>';
             tableContent += '</tr>';

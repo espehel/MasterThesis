@@ -1,7 +1,7 @@
 extends layout
 mixin linkItem(href, title, header, score)
     li
-        a(href=href)
+        a(href=href+"?state=2")
             =title + ":"
         =" " + header
         =" - " + score
