@@ -10,6 +10,14 @@ a {
     color: #00B7FF;
 }
 
+a.relevant {
+  color: lime;
+}
+
+a.irrelevant {
+    color: red;
+}
+
 .container ul {
     list-style: none;
 }

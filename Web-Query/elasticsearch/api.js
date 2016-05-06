@@ -161,6 +161,7 @@ module.exports.search = function (query_content, callback) {
         }
     }, function (error, response) {
         //console.log(response);
+        console.log('"', query_content, '" - ', response.hits.total);
         callback(error, response.hits.hits);
     });
 

@@ -36,10 +36,18 @@ function getExamples() {
         // For each item in our JSON, add a table row and cells to the content string
         $.each(data.examples, function(){
 
+            console.log(this);
+
             tableContent += '<tr>';
             tableContent += '<td><a href="' + this._source.url + '">' + this._source.title + '</a>' + '</td>';//+ ': ' + '<a href="' + this._source.url + '#' + this._source.header + '">' + this._source.header + '</a>' + '</td>';
             tableContent += '<td>'+this._score+'</td>';
-            tableContent += '<td>'+ '<a href="examples/' + this._source.id + '?state=1' + '">Explore Example</a><br/>' +this._source.html+'</td>';
+            if (this.relevant) {
+                tableContent += '<td>' + '<a class="relevant" href="examples/' + this._source.id + '?state=1' + '">Explore Example ' + this._source.id + '</a><br/>' + this._source.html + '</td>';
+            } else if (this.irrelevant) {
+                tableContent += '<td>' + '<a class="irrelevant" href="examples/' + this._source.id + '?state=1' + '">Explore Example ' + this._source.id + '</a><br/>' + this._source.html + '</td>';
+            } else {
+                tableContent += '<td>' + '<a href="examples/' + this._source.id + '?state=1' + '">Explore Example ' + this._source.id + '</a><br/>' + this._source.html + '</td>';
+            }
             //tableContent += '<td>' + '<input type="button" value="Explore example" onclick="exploreExample(' + this._source.id + ');" </input><br/>' +this._source.html+'</td>';
             tableContent += '<td>'+this._source.categories.join(', ')+'</td>';
             tableContent += '</tr>';

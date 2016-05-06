@@ -28,6 +28,8 @@ router.get('/examples/', function(req, res, next) {
                 score: entry._score,
                 categories: entry._source.categories
             });
+            
+            analyzer.checkRelevance(entry, req.query.search);
 
             //scrapes the live wiki page for the html and style
             scraper.scrape(entry._source.url, entry._source.title, entry._source.header, function(err, html){

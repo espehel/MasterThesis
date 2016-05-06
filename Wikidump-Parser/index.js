@@ -28,7 +28,7 @@ XMLParser.getElements("page", function(element, line){
             if (markup.content) {
                 //parses the content of the page into a object structure
                 var parsedPage = markupParser.parseMarkup(markup.content);
-                markup.introduction = parsedPage.introduction;
+                markup.introduction = parsedPage.introduction;//TODO kan denne fjernes og bruke parsedpage istedet på linje 43?
 
                 //some markups contain sequence of signs that the parser cant handle, this is a bad quickfix
                 if (parsedPage.valid) {

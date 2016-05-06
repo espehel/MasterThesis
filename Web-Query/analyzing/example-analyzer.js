@@ -1,3 +1,6 @@
+var relevantExamples = require("./relevantExamples.json");
+
+
 
 module.exports.splitInTwo = function (examples) {
     return {left: examples.slice(0,examples.length/2), right: examples.slice(examples.length/2, examples.length)}
@@ -91,6 +94,14 @@ module.exports.order = function (similarExamples, example) {
         return b.score - a.score;
     })
     return {left: left,  right: right.slice(0, 10)};
+};
+
+module.exports.checkRelevance = function (example, search) {
+    if (relevantExamples[search].relevant.indexOf(example._source.id) != -1) {
+        example.relevant = true;
+    } else if (relevantExamples[search].irrelevant.indexOf(example._source.id) != -1) {
+        example.irrelevant = true;
+    }
 }
 
 
