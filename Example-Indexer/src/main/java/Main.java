@@ -30,7 +30,7 @@ public class Main implements CommandLineRunner{
     public void run(String... strings) throws Exception {
         //load whitelist
         CategoryFilterer filterer = new CategoryFilterer();
-        filterer.loadWhitelistCollection("/whitelistV1.txt");
+        filterer.loadWhitelistCollection("/whitelistV3.txt");
 
         //get from database
         System.out.println(new Date() + ": Retreiving from database");

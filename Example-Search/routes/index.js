@@ -11,7 +11,7 @@ var categoryGroup;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Example Query' });
+    res.render('index', { title: 'Example Search' });
 });
 
 /* GET examples */

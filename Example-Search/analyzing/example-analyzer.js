@@ -83,7 +83,7 @@ module.exports.order = function (similarExamples, example) {
     var left = [];
     var right = [];
     similarExamples.forEach(function (entry) {
-        entry.score = compare(entry._source.categories, example._source.categories) / entry._source.categories.length;
+        entry.score = compare(entry._source.categories, example._source.categories) / example._source.categories.length;
         if(entry.score == 1) {
             left.push(entry);
         } else {
@@ -97,10 +97,12 @@ module.exports.order = function (similarExamples, example) {
 };
 
 module.exports.checkRelevance = function (example, search) {
-    if (relevantExamples[search].relevant.indexOf(example._source.id) != -1) {
-        example.relevant = true;
-    } else if (relevantExamples[search].irrelevant.indexOf(example._source.id) != -1) {
-        example.irrelevant = true;
+    if (relevantExamples[search]) {
+        if (relevantExamples[search].relevant.indexOf(example._source.id) != -1) {
+            example.relevant = true;
+        } else if (relevantExamples[search].irrelevant.indexOf(example._source.id) != -1) {
+            example.irrelevant = true;
+        }
     }
 }
 
