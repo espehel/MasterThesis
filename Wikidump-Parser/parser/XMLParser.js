@@ -87,15 +87,7 @@ module.exports.getElements = function(elementName, callback) {
     });
 
     var file = fs.createReadStream(config.dumpLocation);
-    /*var stream = new XmlStream(file);
-    stream.preserve(elementName);
-    stream.on('endElement: ' + elementName, function (element) {
-        callback(element);
-    });*/
-
-
-// pipe is supported, and it's readable/writable
-// same chunks coming in also go out.
+    
     file.pipe(saxStream);
 };
 

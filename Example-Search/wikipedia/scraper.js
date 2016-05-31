@@ -77,12 +77,3 @@ module.exports.scrape = function (url, title, section, callback) {
         }
     });
 };
-
-//console.log(cleanString("Post logics ''P<sub>m</sub>''"));
-//console.log(removeMarkup("Post logics ''P<sub>m</sub>''"));
-
-//console.log(pageParser.plaintext("Post logics ''P<sub>m</sub>''"));
-
-/*module.exports.scrape("https://en.wikipedia.org/?curid=38024", "Belnap logic", function (error, callback) {
-
-});*/

@@ -151,7 +151,7 @@ module.exports.search = function (query_content, callback) {
     client.search({
         index: "wikipedia",
         body: {
-            "size": 20,
+            "size": 318,
             query: {
                 match: {
                     "_all": query_content

@@ -1,5 +1,7 @@
 import database.MySQLApi;
 import filtering.CategoryFilterer;
+import filtering.ExampleFilterer;
+import filtering.Filterer;
 import index.ElasticIndexer;
 import index.ElasticSearchIndexable;
 import index.LuceneIndexer;
@@ -29,8 +31,10 @@ public class Main implements CommandLineRunner{
     @Override
     public void run(String... strings) throws Exception {
         //load whitelist
-        CategoryFilterer filterer = new CategoryFilterer();
-        filterer.loadWhitelistCollection("/whitelistV3.txt");
+        //Filterer filterer = new CategoryFilterer();
+        //filterer.loadWhitelistCollection("/whitelistV3.txt");
+        Filterer filterer = new ExampleFilterer();
+        filterer.loadWhitelistCollection("/evaluatedExamples2.txt");
 
         //get from database
         System.out.println(new Date() + ": Retreiving from database");
